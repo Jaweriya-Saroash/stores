@@ -14,68 +14,65 @@
 <body>
   <h1>Admin Panel</h1>
 
-  <h2>Add New Product</h2>
-  <input id="in-title" placeholder="Title">
-  <input id="in-price" placeholder="Price">
-  <textarea id="in-specs" rows="2" placeholder="Specs"></textarea>
-  <input id="in-image" placeholder="Image URL">
-  <button id="btn-add">Add Product</button>
-
-  <h2>Current Products</h2>
-  <div id="list"></div>
+  <h2>Edit products.json</h2>
+  <textarea id="json-editor" rows="15" style="font-family:monospace;"></textarea>
+  <br>
+  <button id="btn-save">Save to GitHub</button>
+  <p style="font-size:0.9em;color:#555">
+    Make sure you’ve set these at the top of the script:<br>
+    <code>const GITHUB_TOKEN = 'YOUR_TOKEN';<br>
+    const OWNER = 'your-username';<br>
+    const REPO = 'your-repo';</code>
+  </p>
 
   <script>
-    let products = [];
+    const GITHUB_TOKEN = 'YOUR_TOKEN';
+    const OWNER        = 'your-username';
+    const REPO         = 'your-repo';
+    const PATH         = 'products.json';
+    const BRANCH       = 'main';
 
-    function save() {
-      const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'products.json';
-      a.click();
-    }
+    let sha;
 
-    function render() {
-      const list = document.getElementById('list');
-      list.innerHTML = '';
-      products.forEach((p, i) => {
-        const d = document.createElement('div');
-        d.className = 'item';
-        d.innerHTML = `
-          <strong>${p.title}</strong> — PKR ${p.price}
-          <p>${p.specs}</p>
-          <img src="${p.image}" alt="" style="max-width:100px; display:block; margin-bottom:5px;">
-          <button data-i="${i}" class="btn-del">Delete</button>
-        `;
-        list.appendChild(d);
+    // load current JSON + get SHA for commit
+    async function load() {
+      const api = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${BRANCH}`;
+      const res = await fetch(api, {
+        headers: { Authorization: 'token ' + GITHUB_TOKEN }
       });
-      save();
+      const data = await res.json();
+      sha = data.sha;
+      const content = atob(data.content.replace(/\n/g,''));
+      document.getElementById('json-editor').value = content;
     }
 
-    document.getElementById('btn-add').onclick = () => {
-      const t = document.getElementById('in-title').value.trim();
-      const pr = document.getElementById('in-price').value.trim();
-      const sp = document.getElementById('in-specs').value.trim();
-      const im = document.getElementById('in-image').value.trim();
-      if (t && pr && sp && im) {
-        products.push({ title: t, price: pr, specs: sp, image: im });
-        render();
-        document.querySelectorAll('#in-title,#in-price,#in-specs,#in-image').forEach(i => i.value = '');
-      }
-    };
+    // save back to GitHub
+    async function save() {
+      const content = btoa(unescape(encodeURIComponent(
+        document.getElementById('json-editor').value
+      )));
+      const body = {
+        message: 'Update products.json via Admin',
+        content,
+        sha,
+        branch: BRANCH
+      };
+      await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: 'token ' + GITHUB_TOKEN,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        }
+      );
+      alert('Saved! Give GitHub ~1min to rebuild Pages.');
+    }
 
-    document.getElementById('list').onclick = e => {
-      if (e.target.classList.contains('btn-del')) {
-        products.splice(+e.target.dataset.i, 1);
-        render();
-      }
-    };
-
-    // load existing products.json
-    fetch('products.json')
-      .then(r => r.json())
-      .then(j => { products = j; render(); })
-      .catch(() => { /* ignore */ });
+    document.getElementById('btn-save').onclick = save;
+    load();
   </script>
 </body>
 </html>
