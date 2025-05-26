@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin Panel</title>
+  <style>
+    body { font-family: sans-serif; padding:20px; }
+    input, textarea { width:100%; margin-bottom:10px; padding:8px; }
+    button { padding:8px 12px; cursor:pointer; }
+    .item { border:1px solid #ddd; padding:10px; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+
+  <h2>Add New Product</h2>
+  <input id="in-title" placeholder="Title">
+  <input id="in-price" placeholder="Price">
+  <textarea id="in-specs" rows="2" placeholder="Specs"></textarea>
+  <input id="in-image" placeholder="Image URL">
+  <button id="btn-add">Add Product</button>
+
+  <h2>Current Products</h2>
+  <div id="list"></div>
+
+  <script>
+    let products = [];
+
+    function save() {
+      const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'products.json';
+      a.click();
+    }
+
+    function render() {
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+      products.forEach((p, i) => {
+        const d = document.createElement('div');
+        d.className = 'item';
+        d.innerHTML = `
+          <strong>${p.title}</strong> — PKR ${p.price}
+          <p>${p.specs}</p>
+          <img src="${p.image}" alt="" style="max-width:100px; display:block; margin-bottom:5px;">
+          <button data-i="${i}" class="btn-del">Delete</button>
+        `;
+        list.appendChild(d);
+      });
+      save();
+    }
+
+    document.getElementById('btn-add').onclick = () => {
+      const t = document.getElementById('in-title').value.trim();
+      const pr = document.getElementById('in-price').value.trim();
+      const sp = document.getElementById('in-specs').value.trim();
+      const im = document.getElementById('in-image').value.trim();
+      if (t && pr && sp && im) {
+        products.push({ title: t, price: pr, specs: sp, image: im });
+        render();
+        document.querySelectorAll('#in-title,#in-price,#in-specs,#in-image').forEach(i => i.value = '');
+      }
+    };
+
+    document.getElementById('list').onclick = e => {
+      if (e.target.classList.contains('btn-del')) {
+        products.splice(+e.target.dataset.i, 1);
+        render();
+      }
+    };
+
+    // load existing products.json
+    fetch('products.json')
+      .then(r => r.json())
+      .then(j => { products = j; render(); })
+      .catch(() => { /* ignore */ });
+  </script>
+</body>
+</html>
