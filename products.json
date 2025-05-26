@@ -1,8 +1,16 @@
 [
   {
-    "title": "Product 1",
-    "price": "500",
-    "specs": "Basic product description",
-    "image": "https://via.placeholder.com/150"
+    "id": 1,
+    "title": "3 Piece Suit – Crimson",
+    "specs": "Embroidered lawn shirt with chiffon dupatta",
+    "price": "3600",
+    "images": ["images/product1.jpg"]
+  },
+  {
+    "id": 2,
+    "title": "2 Piece Suit – Sapphire",
+    "specs": "Printed lawn shirt with trousers",
+    "price": "2400",
+    "images": ["images/product2.jpg"]
   }
 ]
