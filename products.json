@@ -1,16 +1,30 @@
 [
   {
     "id": 1,
-    "title": "3 Piece Suit – Crimson",
-    "specs": "Embroidered lawn shirt with chiffon dupatta",
-    "price": "3600",
-    "images": ["images/product1.jpg"]
+    "name": "Elegant Vase",
+    "price": 29.99,
+    "image": "images/vase.jpg",
+    "description": "A beautifully crafted ceramic vase."
   },
   {
     "id": 2,
-    "title": "2 Piece Suit – Sapphire",
-    "specs": "Printed lawn shirt with trousers",
-    "price": "2400",
-    "images": ["images/product2.jpg"]
+    "name": "Modern Lamp",
+    "price": 45.50,
+    "image": "images/lamp.jpg",
+    "description": "A sleek lamp for modern interiors."
+  },
+  {
+    "id": 3,
+    "name": "Wooden Chair",
+    "price": 85.00,
+    "image": "images/chair.jpg",
+    "description": "Comfortable wooden chair with cushion."
+  },
+  {
+    "id": 4,
+    "name": "Artistic Painting",
+    "price": 150.00,
+    "image": "images/painting.jpg",
+    "description": "Abstract art to elevate your space."
   }
 ]
