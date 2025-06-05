@@ -6,35 +6,39 @@
   <meta name="description" content="Jaweriya Saroash – Premium cloth selling website offering a curated collection of stylish women's apparel." />
   <title>Jaweriya Saroash</title>
 
-  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 
-  <!-- External CSS -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Bootstrap & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Top Navigation -->
   <div class="top-bar">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand d-flex align-items-center" href="#home">
-          <img src="logo.jpg" alt="Logo" loading="lazy" />
+          <img src="logo.jpg" alt="Jaweriya Saroash Logo" loading="lazy" />
           <span>Jaweriya Saroash</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#products">Shop</a></li>
-            <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#products">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Us</a>
+            </li>
           </ul>
           <div class="site-search ms-3">
             <input type="text" id="site-search-input" placeholder="Search site..." />
@@ -42,22 +46,175 @@
           </div>
         </div>
         <a class="cart-icon" href="#" id="cart-link">
-          <i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)
+          <i class="fas fa-shopping-cart"></i>
+          (<span id="cart-count">0</span>)
         </a>
       </div>
     </nav>
   </div>
 
-  <!-- Sections: Hero, Products, About, Contact, Modals, Footer, etc. -->
-  <!-- Inserted via app.js dynamically or copy paste from original content -->
+  <header id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Style That Speaks</h1>
+          <p>
+            Using every aspect—from fabric to accessories—our collections celebrate individuality and empower women.
+          </p>
+          <a href="#products" class="btn">Explore</a>
+        </div>
+        <div class="hero-img">
+          <img src="hsi.png" alt="Fashionable Woman" />
+        </div>
+      </div>
+    </div>
+  </header>
 
-  <!-- Inline Notification -->
-  <div id="notification"></div>
+  <section id="products">
+    <div class="container" data-aos="fade-up">
+      <h2>Our Products</h2>
+      <input type="text" id="product-filter" placeholder="Search Products..." aria-label="Product Search" />
+      <div id="product-container"></div>
+    </div>
+  </section>
 
-  <!-- Scroll To Top Button -->
+  <section id="about">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="section-heading">About Us</h2>
+          <p>
+            At Jaweriya Saroash, we believe in empowering women through distinctive fashion. Our collections blend timeless elegance with modern innovation—each piece is carefully crafted to celebrate individuality and inspire confidence.
+          </p>
+          <p>
+            We push creative boundaries while staying true to classic charm. Every garment not only elevates your style but also reflects a lifestyle where sophistication meets substance.
+          </p>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="logo.jpg" alt="About Us" class="img-fluid rounded" style="width:300px; height:auto;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section bg-dark text-light">
+    <div class="container" data-aos="fade-up">
+      <div class="row text-center mb-5">
+        <div class="col">
+          <h2 class="section-heading">Contact Us</h2>
+          <p>Get in touch for inquiries and support.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" data-aos="fade-right">
+          <img src="hsi.jpg" alt="Contact Image" class="img-fluid rounded" style="max-width:300px; height:auto; margin-bottom:20px;">
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+          <form id="contact-form">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="order-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-order" aria-label="Close Order">&times;</span>
+      <h2>Complete Your Order</h2>
+      <form id="order-form">
+        <div class="mb-3">
+          <label for="order-name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="order-name" placeholder="Your Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="order-contact" class="form-label">Contact No.</label>
+          <input type="text" class="form-control" id="order-contact" placeholder="Your Contact Number" required>
+        </div>
+        <div class="mb-3">
+          <label for="order-address" class="form-label">Address</label>
+          <textarea class="form-control" id="order-address" rows="3" placeholder="Your Address" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Order Method</label>
+          <div>
+            <input type="radio" id="order-email" name="orderMethod" value="email" checked>
+            <label for="order-email">Email</label>
+          </div>
+          <div>
+            <input type="radio" id="order-whatsapp" name="orderMethod" value="whatsapp">
+            <label for="order-whatsapp">WhatsApp</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Order</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-cart" aria-label="Close Cart">&times;</span>
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <button id="place-order" class="btn btn-primary mt-3">Place Order</button>
+    </div>
+  </div>
+
+  <div id="product-detail-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-detail" aria-label="Close Details">&times;</span>
+      <div id="product-detail-container">
+        <div id="detail-image">
+          <img id="detail-img" src="" alt="Product Detail" class="img-fluid">
+        </div>
+        <div id="detail-info">
+          <div class="info-top">
+            <h3 id="detail-title"></h3>
+            <p id="detail-specs"></p>
+            <p class="price" id="detail-price"></p>
+          </div>
+          <div class="info-bottom">
+            <button id="detail-add-cart" class="btn btn-secondary">Add to Cart</button>
+            <button id="detail-buy-now" class="btn btn-primary">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <button id="scrollToTop" aria-label="Scroll to Top">&#8679;</button>
 
-  <!-- Bootstrap + AOS + App -->
+  <div id="notification"></div>
+
+  <footer class="bg-secondary text-light py-3">
+    <div class="container text-center">
+      <div class="footer-links d-flex justify-content-center gap-3 mb-2">
+        <a href="https://instagram.com/jaweriyas_official" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
+        <a href="https://wa.me/923400434334" target="_blank" aria-label="WhatsApp">
+          <i class="fab fa-whatsapp fa-lg"></i>
+        </a>
+        <a href="mailto:jaweriyasofficial@gmail.com" target="_blank" aria-label="Email">
+          <i class="fas fa-envelope fa-lg"></i>
+        </a>
+      </div>
+      <p class="mb-0">&copy; 2025 Jaweriya Saroash. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script src="app.js"></script>
