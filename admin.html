@@ -3,69 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel</title>
+  <title>Admin Panel – Update Products</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    h1 { margin-bottom: 20px; }
-    textarea {
-      width: 100%;
-      height: 500px;
-      font-family: monospace;
-      font-size: 14px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    p.note {
-      font-size: 0.9em;
-      color: #555;
-      margin-top: 10px;
-    }
+    body { font-family: Arial; padding: 20px; }
+    textarea { width: 100%; height: 300px; font-family: monospace; }
+    button { padding: 10px 20px; margin-top: 10px; }
+    .status { margin-top: 10px; }
   </style>
 </head>
 <body>
-  <h1>Admin Panel – Edit Products</h1>
-  <p>Edit the JSON data below. When done, click "Download" and upload the file back to GitHub to update the site.</p>
-  <textarea id="editor"></textarea>
-  <br />
-  <button onclick="download()">Download Updated products.json</button>
-  <p class="note">This panel cannot auto-save to GitHub. You must re-upload the file manually to your repo.</p>
+  <h1>Admin Panel</h1>
+  <p>Edit the product JSON below and click "Update GitHub"</p>
+
+  <textarea id="jsonArea"></textarea>
+  <br/>
+  <button onclick="updateProducts()">Update GitHub</button>
+  <div class="status" id="status"></div>
 
   <script>
-    // Load existing product JSON
-    fetch('products.json')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('editor').value = JSON.stringify(data, null, 2);
-      })
-      .catch(err => {
-        document.getElementById('editor').value = '[]';
-        console.error('Failed to load products.json:', err);
+    const GITHUB_TOKEN = 'YOUR_PERSONAL_ACCESS_TOKEN_HERE'; // never expose publicly
+    const REPO_OWNER = 'YOUR_USERNAME';
+    const REPO_NAME = 'YOUR_REPO';
+    const FILE_PATH = 'products.json';
+    const BRANCH = 'main';
+
+    async function updateProducts() {
+      const content = document.getElementById('jsonArea').value;
+      const base64Content = btoa(unescape(encodeURIComponent(content)));
+      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+
+      const getRes = await fetch(url, {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          Accept: 'application/vnd.github.v3+json'
+        }
       });
 
-    // Download updated file
-    function download() {
-      const content = document.getElementById('editor').value;
-      const blob = new Blob([content], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "products.json";
-      a.click();
+      const fileData = await getRes.json();
+      const sha = fileData.sha;
+
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          Accept: 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify({
+          message: 'Update products.json',
+          content: base64Content,
+          sha: sha,
+          branch: BRANCH
+        })
+      });
+
+      if (res.ok) {
+        document.getElementById('status').innerText = '✅ Product list updated!';
+      } else {
+        const error = await res.json();
+        document.getElementById('status').innerText = `❌ Error: ${error.message}`;
+      }
     }
+
+    // Fetch current content to display
+    window.onload = async () => {
+      const url = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${FILE_PATH}`;
+      const res = await fetch(url);
+      const json = await res.text();
+      document.getElementById('jsonArea').value = json;
+    };
   </script>
 </body>
 </html>
